@@ -5,5 +5,5 @@ import (
 )
 
 func main() {
-	fundamentos.For()
+	fundamentos.Arrays()
 }
