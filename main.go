@@ -1,9 +1,10 @@
 package main
 
 import (
-	"golang-learning/fundamentos"
+	// "golang-learning/fundamentos"
+	"golang-learning/funcs"
 )
 
 func main() {
-	fundamentos.Arrays()
+	funcs.ExemploFunc()
 }
