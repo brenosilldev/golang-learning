@@ -1,4 +1,4 @@
-package funcs
+package avancado
 
 import "fmt"
 
@@ -10,7 +10,6 @@ func ExemploFunc() {
 	fmt.Println(valor)
 }
 
-
-func exemplo(a int, b int) (int,string, float64) {
-	return a + b, "Hello, World!", float64(a + b)
+func exemplo(a int, b int) (int, string, float64) {
+	return a + b, "Hello, World 1.0!", float64(a + b)
 }

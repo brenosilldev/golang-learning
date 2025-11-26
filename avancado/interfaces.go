@@ -1,0 +1,5 @@
+package avancado
+
+func InterfaceExemplo() {
+
+}
