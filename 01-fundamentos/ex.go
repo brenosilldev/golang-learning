@@ -1,4 +1,4 @@
-package fundamentos
+package _1_fundamentos
 
 import "fmt"
 
@@ -11,7 +11,7 @@ func ExercicioMaps() {
 	}
 	fmt.Println(soma)
 
-	lista := []int{2,8,3,10,5,4,9,9}
+	lista := []int{2, 8, 3, 10, 5, 4, 9, 9}
 	numeroate5 := 0
 	numeroacima5 := 0
 	for i := 0; i < len(lista); i++ {
