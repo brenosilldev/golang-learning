@@ -1,0 +1,80 @@
+syntax = "proto3";
+
+package taskapi;
+
+// Onde o código Go gerado será colocado
+option go_package = "./pb";
+
+// ============================================================================
+// MÓDULO 15 — Definição do serviço gRPC
+// ============================================================================
+//
+// Este arquivo define o CONTRATO da API.
+// Tanto servidor quanto cliente são gerados a partir dele.
+//
+// Para gerar o código Go:
+//   protoc --go_out=. --go-grpc_out=. proto/task.proto
+//
+// Isso gera:
+//   pb/task.pb.go       → structs (Task, CreateTaskRequest, etc.)
+//   pb/task_grpc.pb.go  → interface do server + client
+// ============================================================================
+
+// --- Messages (como structs) ---
+
+message Task {
+  int32 id = 1;           // campo 1
+  string titulo = 2;      // campo 2
+  string descricao = 3;   // campo 3
+  bool concluida = 4;     // campo 4
+  int64 criado_em = 5;    // timestamp unix
+}
+
+message CreateTaskRequest {
+  string titulo = 1;
+  string descricao = 2;
+}
+
+message GetTaskRequest {
+  int32 id = 1;
+}
+
+message UpdateTaskRequest {
+  int32 id = 1;
+  string titulo = 2;
+  string descricao = 3;
+  bool concluida = 4;
+}
+
+message DeleteTaskRequest {
+  int32 id = 1;
+}
+
+message TaskResponse {
+  Task task = 1;
+}
+
+message Empty {}
+
+message TaskList {
+  repeated Task tasks = 1;  // repeated = slice/array
+}
+
+message DeleteResponse {
+  bool success = 1;
+  string message = 2;
+}
+
+// --- Service (como interface) ---
+
+service TaskService {
+  // Unary RPCs (request → response)
+  rpc CreateTask(CreateTaskRequest) returns (TaskResponse);
+  rpc GetTask(GetTaskRequest) returns (TaskResponse);
+  rpc UpdateTask(UpdateTaskRequest) returns (TaskResponse);
+  rpc DeleteTask(DeleteTaskRequest) returns (DeleteResponse);
+  rpc ListTasks(Empty) returns (TaskList);
+
+  // Server streaming (request → stream de responses)
+  rpc StreamTasks(Empty) returns (stream Task);
+}

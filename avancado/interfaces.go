@@ -1,5 +1,0 @@
-package avancado
-
-func InterfaceExemplo() {
-
-}
