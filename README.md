@@ -1,24 +1,37 @@
 # 🚀 Go Learning Hub
 
-> Repositório completo de estudo de **Go (Golang)** — da linguagem base até blockchain e Web3.
+![Go Version](https://img.shields.io/badge/Go-1.22+-00ADD8?style=flat&logo=go) ![Módulos](https://img.shields.io/badge/M%C3%B3dulos-23-4CAF50?style=flat) ![Projeto Final](https://img.shields.io/badge/Projeto-NexusMQ-FF5722?style=flat) ![Licença](https://img.shields.io/badge/Licen%C3%A7a-MIT-blue?style=flat)
+
+> Repositório completo de estudo de **Go (Golang)** — da linguagem base até sistemas distribuídos de produção.
+
+---
+
+## 🗺️ Ordem de Leitura
+
+| # | Arquivo | Por que ler |
+|---|---------|-------------|
+| 1️⃣ | **[README.md](./README.md)** ← você está aqui | Visão geral e quick start |
+| 2️⃣ | **[2-GUIA_DE_ESTUDO.md](./2-GUIA_DE_ESTUDO.md)** | Tempo estimado, curva de dificuldade, caminhos |
+| 3️⃣ | **[3-MERCADO_E_VAGAS.md](./3-MERCADO_E_VAGAS.md)** | Salários, onde aplicar, o que o mercado exige |
+| 4️⃣ | **[4-RECURSOS.md](./4-RECURSOS.md)** | Livros, cursos, ferramentas, canais |
+| 5️⃣ | **[5-CHEATSHEET.md](./5-CHEATSHEET.md)** | Referência rápida de sintaxe Go |
+| 6️⃣ | **[6-ERROS_COMUNS.md](./6-ERROS_COMUNS.md)** | Armadilhas e antipatterns a evitar |
+| 7️⃣ | **[curso/README.md](./curso/README.md)** | Trilha completa com todos os módulos |
 
 ---
 
 ## 📚 O que tem aqui?
 
-Este repositório contém **dois cursos independentes**, organizados para um aprendizado progressivo:
-
 ```
 golang-learning/
-├── 📘 curso/     → Curso de Go (linguagem)
-└── 🌐 web3/      → Curso de Web3 com Go (blockchain)
+└── 📘 curso/     → Curso de Go — Do Básico ao Avançado + Sistemas Distribuídos
 ```
 
 ---
 
 ## 📘 [Curso de Go — Do Básico ao Avançado](./curso/README.md)
 
-Aprenda a linguagem Go do zero até nível profissional. **17 módulos** com teoria, exemplos executáveis e exercícios.
+Aprenda a linguagem Go do zero até nível profissional. **22 módulos** com teoria, exemplos executáveis e exercícios.
 
 | Trilha | Módulos | O que cobre |
 |--------|---------|-------------|
@@ -26,63 +39,16 @@ Aprenda a linguagem Go do zero até nível profissional. **17 módulos** com teo
 | 🟡 **Intermediário** | 07-10 | Structs, interfaces, erros, pacotes |
 | 🔴 **Avançado** | 11-13 | Concorrência, generics, testes |
 | 🏗️ **Produção** | 14-17 | APIs (net/http, Gin, Fiber), gRPC, banco de dados, Docker |
+| 🌐 **Sistemas Distribuídos** | 18-22 | CAP/Raft/Kafka/OpenTelemetry/Kubernetes |
+| 🔐 **Segurança** | 23 | JWT, bcrypt, RBAC, TLS, rate limiting |
 | 🎯 **Projeto Final** | NexusMQ | Message broker distribuído (protocolo TCP, WAL, replicação) |
 
 ```bash
-# Rodar qualquer exemplo do curso Go:
+# Rodar qualquer exemplo do curso:
 go run curso/modulo-01-introducao/exemplos/exemplo01_hello.go
 ```
 
 **→ [Começar o Curso de Go](./curso/README.md)**
-
----
-
-## 🌐 [Curso de Web3 — Blockchain com Go](./web3/README.md)
-
-Aprenda blockchain, Ethereum, DeFi e como construir infraestrutura Web3 com Go. **7 módulos** com teoria detalhada, simulações funcionais e exercícios práticos.
-
-| Trilha | Módulos | O que cobre |
-|--------|---------|-------------|
-| 🔐 **Fundamentos** | 01-02 | Criptografia (SHA-256, ECDSA, Merkle Tree), blockchain do zero |
-| ⛓️ **Ethereum** | 03-04 | go-ethereum (ethclient), smart contracts + Solidity |
-| 💰 **Aplicações** | 05-06 | Tokens (ERC-20/721), DeFi (AMM, lending, flash loans) |
-| 🔍 **Infraestrutura** | 07 | Indexer de blockchain (scanner, API, eventos) |
-| 🎯 **Projeto Final** | ChainPulse | Blockchain explorer com indexing em tempo real |
-
-```bash
-# Rodar exemplos Web3 (vários funcionam sem dependências externas):
-go run web3/01-criptografia/exemplos/hashing.go
-go run web3/02-blockchain-do-zero/exemplos/blockchain.go
-go run web3/05-tokens-nfts/exemplos/tokens.go
-go run web3/06-defi/exemplos/amm.go
-```
-
-**→ [Começar o Curso de Web3](./web3/README.md)**
-
----
-
-## 🗺️ Ordem recomendada
-
-```
-                    ┌──────────────────────────┐
-                    │  📘 Curso Go (módulos 01-17)  │
-                    │  Aprenda a linguagem primeiro  │
-                    └─────────────┬────────────┘
-                                  │
-                    ┌─────────────▼────────────┐
-                    │  🌐 Curso Web3 (módulos 01-07)│
-                    │  Aplique Go em blockchain     │
-                    └─────────────┬────────────┘
-                                  │
-                ┌─────────────────┼─────────────────┐
-                ▼                 ▼                  ▼
-        🎯 NexusMQ         🎯 ChainPulse        💼 Mercado
-        (Message Broker)   (Block Explorer)      (Web3 ou Backend)
-```
-
-1. **Primeiro**: Complete o curso Go (módulos 01-17)
-2. **Depois**: Faça o curso Web3 se quiser entrar nessa área
-3. **Projetos**: Escolha NexusMQ (backend puro) ou ChainPulse (Web3), ou ambos
 
 ---
 
@@ -101,13 +67,14 @@ go run curso/modulo-01-introducao/exemplos/exemplo01_hello.go
 
 ## 📊 Números
 
-| Métrica | Curso Go | Curso Web3 | Total |
-|---------|----------|-----------|-------|
-| Módulos | 17 | 7 | 24 |
-| READMEs com teoria | 17 | 8 | 25 |
-| Exemplos `.go` | 30+ | 12 | 42+ |
-| Exercícios | 14 | 7 | 21 |
-| Projetos finais | 1 (NexusMQ) | 1 (ChainPulse) | 2 |
+| Métrica | Quantidade |
+|---------|-----------|
+| Módulos | 23 |
+| READMEs com teoria | 23 |
+| Exemplos `.go` | 30+ |
+| Exercícios | 20 sets |
+| Projeto final | 1 (NexusMQ) |
+| Stack Docker Compose | 1 (Kafka, NATS, Prometheus, Grafana, Jaeger, etcd, Postgres) |
 
 ---
 

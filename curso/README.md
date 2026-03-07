@@ -1,8 +1,8 @@
-# 🚀 Curso Completo de Go — Do Básico ao Avançado
+# 🚀 Curso Completo de Go — Do Básico ao Avançado + Sistemas Distribuídos
 
 > **Autor**: Gerado como material de estudo personalizado  
 > **Pré-requisito**: Experiência prévia com programação (3+ anos)  
-> **Go Version**: 1.21+
+> **Go Version**: 1.22+
 
 ---
 
@@ -28,10 +28,9 @@ Go (ou Golang) foi criada pelo Google em 2009 por **Robert Griesemer**, **Rob Pi
 - 🔧 **CLIs** — Ferramentas de linha de comando (Cobra, Viper)
 - ☁️ **Cloud & DevOps** — SDKs da AWS, GCP, Azure são Go-first
 - 🐳 **Containers** — Docker foi escrito em Go
-- 📊 **Sistemas distribuídos** — Consenso, message brokers, databases
-- 🕸️ **Web scraping** — Colly, chromedp
-- 🤖 **Automação** — Scripts que precisam de performance
-- 🎮 **Game servers** — Backends de jogos multiplayer
+- 📊 **Sistemas distribuídos** — Consenso (Raft), message brokers, bancos distribuídos
+- 📡 **Observabilidade** — Prometheus, OpenTelemetry, Jaeger — todos têm SDKs Go nativos
+- ☸️ **Kubernetes Operators** — Estender o K8s com lógica customizada em Go
 
 ### Go vs Outras Linguagens
 
@@ -79,10 +78,24 @@ Go vs Node.js  → Concorrência real (não event loop), tipagem estática, melh
 | 16 | [Banco de Dados](./modulo-16-database/README.md) | database/sql, GORM, transactions, repository pattern |
 | 17 | [Docker para Go](./modulo-17-docker/README.md) | Multi-stage build, scratch, compose, CI/CD |
 
+### 🌐 Sistemas Distribuídos (Módulos 18-22)
+| # | Módulo | Tópicos |
+|---|--------|---------|
+| 18 | [Fundamentos de Sistemas Distribuídos](./modulo-18-sistemas-distribuidos/README.md) | CAP Theorem, consistência, clocks lógicos, circuit breaker, retry |
+| 19 | [Consenso & Raft](./modulo-19-consensus-raft/README.md) | Algoritmo Raft, leader election, replicação, etcd |
+| 20 | [Message Queues & Event-Driven](./modulo-20-message-queues/README.md) | Kafka, NATS, CQRS, Saga pattern, outbox |
+| 21 | [Observabilidade & SRE](./modulo-21-observabilidade/README.md) | OpenTelemetry, Prometheus, Jaeger, SLI/SLO, structured logging |
+| 22 | [Cloud Native & Kubernetes](./modulo-22-cloud-native-k8s/README.md) | K8s, health checks, graceful shutdown, Helm, operadores |
+
+### 🔐 Segurança (Módulo 23)
+| # | Módulo | Tópicos |
+|---|--------|---------|
+| 23 | [Segurança em Go](./modulo-23-seguranca/README.md) | bcrypt, JWT, middleware RBAC, TLS/mTLS, rate limiting, OWASP |
+
 ### 🎯 Projeto Final
 | # | Módulo | Tópicos |
 |---|--------|---------|
-| 🔥 | [NexusMQ — Message Broker](./projeto-final/README.md) | Protocolo TCP, WAL, consumer groups, replicação |
+| 🔥 | [NexusMQ — Message Broker](./projeto-final/README.md) | Protocolo TCP, WAL, consumer groups, replicação, deploy K8s |
 
 ### 💼 Carreira
 | Arquivo | Conteúdo |
