@@ -186,3 +186,60 @@
 ---
 
 > 💡 **Dica**: não tente consumir tudo. Escolha **1 livro** (comece pelo DDIA), **2 canais do YouTube** e **1 curso online** para complementar este repositório. O resto é referência para quando você precisar.
+
+---
+
+## 🚀 Recomendações Extras (além da ementa)
+
+### 🧱 Construir em Público
+
+| Ação | Por que |\
+|------|---------|\
+| Escrever sobre o que aprendeu no LinkedIn / Dev.to / Substack | Explicar para outros é o nível mais alto de fixação de conhecimento |\
+| Commitar código dos exercícios diariamente no GitHub | Recrutadores analisam histórico de atividade real |
+
+---
+
+### 🤼 Praticar Entrevistas (a partir do Módulo 07)
+
+| Plataforma | Foco | Preço |
+|-----------|------|-------|
+| **LeetCode** | Algoritmos e estruturas de dados — resolva em Go | Gratuito (com plano pago opcional) |
+| **Exercism.io** — [trilha Go](https://exercism.io/tracks/go) | Exercícios com feedback de mentores humanos | Gratuito |
+| **Gophercises** — [gophercises.com](https://gophercises.com) | Projetos práticos reais em Go | Gratuito |
+
+---
+
+### 🏗️ System Design (essencial para Sênior+)
+
+| Recurso | Foco |
+|---------|------|
+| **ByteByteGo** (YouTube) | Explica sistemas como Kafka, CDN, Redis de forma visual — complementa os módulos 18-22 |
+| **systemdesign.one** | Artigos gratuitos e bem escritos sobre arquitetura de sistemas |
+
+---
+
+### 🧪 Contribuir para Open Source (após Módulo 13)
+
+- No GitHub, filtre por **`language:Go`** + **`good first issue`**
+- Abrir issues e resolver bugs em projetos reais transforma seu perfil de estudante em engenheiro com experiência comprovada
+
+---
+
+### 📚 Soft Skills (leitura recomendada)
+
+| Livro | Por que ler |
+|-------|------------|
+| **The Pragmatic Programmer** — David Thomas | Mentalidade de engenheiro sênior, independente da linguagem |
+| **A Arte de Resolver Problemas** — Polya | Lógica de decomposição de problemas aplicada diretamente a debugging |
+
+---
+
+### 🔑 Prioridade de Aprendizado
+
+| Prioridade | O que fazer |
+|---|---|
+| 🥇 Alta | Terminar os módulos do curso com exercícios completos |
+| 🥈 Média | Ler o DDIA em paralelo dos Módulos 18+ |
+| 🥉 Complementar | LeetCode + Exercism + ByteByteGo no YouTube |
+| 🎯 Carreira | Commitar código diariamente e escrever sobre o que aprende |

@@ -339,6 +339,250 @@ Semana 4+: Distribuído (se sobreviver)
 
 ---
 
+## 📖 Glossário e Conceitos Fundamentais
+
+> Antes de codar, entenda **o que** você vai construir e **por que** existe. Cada conceito abaixo aparece no projeto — esta seção é sua bússola de referência.
+
+---
+
+### 🗂️ Message Broker — O que é e por que existe?
+
+Um **Message Broker** é um intermediário que desacopla quem produz dados de quem os consome.
+
+```
+SEM broker:
+  Serviço A ──────────────────────────────► Serviço B
+             (se B cair, A perde os dados)
+
+COM broker:
+  Serviço A ──► [NexusMQ] ──► Serviço B
+                    │         (B pode processar quando voltar)
+                    └──► Serviço C
+                         (vários consumidores independentes)
+```
+
+**Por que isso importa?**
+- Serviços ficam **independentes** — A não precisa saber onde B está
+- **Buffering natural** — o broker absorve picos de tráfego
+- **Replay** — consumidores podem reler mensagens do passado
+- É o coração de arquiteturas **event-driven** (Netflix, Uber, Nubank usam Kafka, que é o modelo do NexusMQ)
+
+---
+
+### 📦 Topic, Partition e Offset
+
+**Topic** é como uma "pasta" ou "canal" de mensagens. Exemplo: `topic: pedidos`, `topic: pagamentos`.
+
+**Partition** é a subdivisão de um topic para permitir paralelismo:
+```
+Topic "pedidos" com 3 partitions:
+  Partition 0: [ msg1, msg4, msg7 ]  ← mensagens com key hash % 3 == 0
+  Partition 1: [ msg2, msg5, msg8 ]
+  Partition 2: [ msg3, msg6, msg9 ]
+```
+- Mensagens com a **mesma key** sempre vão para a **mesma partition** (garante ordem)
+- Sem key → **round-robin** (distribuição equilibrada)
+
+**Offset** é o número sequencial de cada mensagem dentro de uma partition. Como um índice de array — começa em 0 e só cresce. O consumer usa o offset para saber "li até aqui".
+
+```
+Partition 0: offset 0, offset 1, offset 2, offset 3...
+                ↑ consumer está aqui (leu até offset 2)
+```
+
+---
+
+### 📝 WAL — Write-Ahead Log
+
+O **WAL** (Write-Ahead Log) é a técnica de persistência mais importante em bancos e sistemas distribuídos.
+
+**A regra fundamental:** *antes de confirmar qualquer operação, escreva no log em disco.*
+
+```
+Mensagem chega:
+  1. Escreve no arquivo WAL (append-only) ← PRIMEIRO
+  2. Confirma pro producer que recebeu    ← SEGUNDO
+  3. Serve para consumers lerem
+```
+
+**Por que append-only?**
+- Operação mais rápida em disco — o head do HD não precisa se mover
+- SSD tem throughput máximo em writes sequenciais
+- Não tem fragmentação — simples de implementar e recuperar após crash
+
+**Formato em disco no NexusMQ:**
+```
+┌──────────┬────────────┬──────────┬────────┬──────────┬────────┬───────┐
+│ Offset(8)│ Timestamp(8│ KeyLen(4)│ Key(N) │ ValLen(4)│ Val(N) │ CRC(4)│
+└──────────┴────────────┴──────────┴────────┴──────────┴────────┴───────┘
+```
+- **CRC32** = checksum para detectar corrupção (se o disco falhar no meio de um write)
+- **Offset** = posição sequencial da mensagem
+- **Segmentos**: quando o arquivo chega em X MB, fecha e abre um novo (facilita compactação e busca)
+
+**Em Go:**
+```go
+// Append-only write: O_APPEND garante que nunca sobrescrevemos
+file, _ := os.OpenFile("segment-000.log", os.O_APPEND|os.O_WRONLY|os.O_CREATE, 0644)
+
+// Para leitura por offset, usamos Seek para ir direto à posição:
+file.Seek(indexedPosition, io.SeekStart)
+```
+
+---
+
+### 🔌 Protocolo Binário sobre TCP
+
+**Por que não usar HTTP/JSON?**
+- JSON = texto = desperdício de bytes. `{"offset": 12345}` são 17 bytes. Em binário: 4 bytes.
+- HTTP tem overhead de headers (centenas de bytes por request)
+- Para 100K msg/s, cada byte importa
+
+**Como funciona:** você define seu próprio "idioma" entre producer, consumer e broker:
+
+```
+Frame (envelope de toda mensagem):
+┌──────────────┬────────────┬─────────────────────┐
+│  Length (4B) │  Type (1B) │  Payload (N bytes)  │
+└──────────────┴────────────┴─────────────────────┘
+     uint32       uint8             variável
+
+Types:
+  0x01 = PRODUCE    (producer → broker: "guarda isso")
+  0x02 = CONSUME    (consumer → broker: "me dê mensagens")
+  0x03 = ACK        (broker → producer: "guardei")
+  0x04 = SUBSCRIBE  (consumer → broker: "quero este topic")
+  0x05 = ERROR      (qualquer direção: "deu errado")
+  0x06 = HEARTBEAT  (broker ↔ broker: "ainda estou vivo")
+```
+
+**Em Go, `encoding/binary` lida com isso:**
+```go
+// Escrever um uint32 em big-endian (padrão de rede):
+binary.Write(conn, binary.BigEndian, uint32(len(payload)))
+
+// Ler:
+var length uint32
+binary.Read(conn, binary.BigEndian, &length)
+```
+
+---
+
+### 👥 Consumer Groups — Como o Load Balancing funciona
+
+Um **Consumer Group** permite que vários consumers cooperem para processar um topic:
+
+```
+Topic "pedidos" (3 partitions) + Consumer Group "processador" (2 consumers):
+
+  Partition 0 ──► Consumer A  (consumer A processa P0 e P1)
+  Partition 1 ──► Consumer A
+  Partition 2 ──► Consumer B  (consumer B processa P2)
+```
+
+**Regra de ouro:** cada partition é atribuída a **no máximo UM** consumer por grupo.
+Isso garante que cada mensagem seja processada **exatamente uma vez** dentro do grupo.
+
+**Rebalancing** acontece quando consumers entram ou saem:
+```
+Consumer C entra no grupo:
+  Antes: A → P0, P1 | B → P2
+  Após:  A → P0     | B → P2 | C → P1
+```
+
+O **Coordinator** (uma goroutine central) detecta isso via heartbeats e recalcula os assignments.
+
+---
+
+### 🔄 Replicação Leader/Follower (Fase 3)
+
+Para tolerância a falhas, cada partition tem uma cópia em múltiplos nós:
+
+```
+Cluster de 3 brokers:
+  Broker 1: Leader de P0, P1   |  Follower de P2
+  Broker 2: Follower de P0     |  Leader de P2
+  Broker 3: Follower de P0, P1 |  Follower de P2
+```
+
+- **Writes** sempre vão para o **Leader** — ele replica para os Followers
+- **ISR (In-Sync Replicas)** = lista de Followers que estão atualizados
+- Se o Leader cair, um Follower do ISR vira o novo Leader (**leader election**)
+
+**Por que ISR importa?** Uma mensagem só é considerada "committed" quando todas as réplicas ISR a confirmaram. Isso garante que se o leader cair, nenhuma mensagem confirmada será perdida.
+
+---
+
+### 🔐 CRC32 — Integridade de Dados
+
+**CRC32** (Cyclic Redundancy Check) é um checksum de 4 bytes calculado sobre os dados da mensagem. Quando você lê do disco, recalcula o CRC e compara:
+
+```go
+import "hash/crc32"
+
+// Ao escrever:
+checksum := crc32.ChecksumIEEE(messageBytes)
+binary.Write(file, binary.BigEndian, checksum)
+
+// Ao ler:
+var storedCRC uint32
+binary.Read(file, binary.BigEndian, &storedCRC)
+computed := crc32.ChecksumIEEE(messageBytes)
+if computed != storedCRC {
+    return errors.New("dados corrompidos no disco")
+}
+```
+
+Isso protege contra falhas de hardware (bit flip, write parcial durante queda de energia).
+
+---
+
+### 📡 Context e Graceful Shutdown
+
+Em sistemas de produção, quando você mata o processo (`SIGTERM`), você não pode simplesmente parar no meio de uma operação. O **Graceful Shutdown** garante que:
+1. Para de aceitar novas conexões
+2. Termina de processar as mensagens em andamento
+3. Fecha arquivos WAL com `Sync()` (flush para disco)
+4. Confirma pendentes para producers
+
+```go
+// O padrão em Go:
+ctx, cancel := context.WithCancel(context.Background())
+
+// Em outra goroutine, aguarda sinal do OS:
+sigChan := make(chan os.Signal, 1)
+signal.Notify(sigChan, syscall.SIGTERM, syscall.SIGINT)
+go func() {
+    <-sigChan
+    cancel() // propaga cancelamento para todas as goroutines
+}()
+
+// Cada componente respeita o context:
+select {
+case msg := <-partition.queue:
+    store(msg)
+case <-ctx.Done():
+    flush(); return // saída limpa
+}
+```
+
+---
+
+### ⚡ Por que 100K msg/s é o benchmark mínimo?
+
+Para referência:
+- Kafka (bem configurado): 1-2 milhões msg/s
+- NATS: 10-20 milhões msg/s
+- RabbitMQ: 50K-100K msg/s
+
+**100K msg/s** com Go é perfeitamente razoável usando:
+- Batching (agrupa mensagens antes de escrever no disco)
+- Buffer de canais (`make(chan Message, 1000)`)
+- `bufio.Writer` (reduz chamadas de sistema de write)
+- `O_SYNC` vs `Sync()` manual (controla quando dar flush)
+
+---
+
 ## ✅ Critérios de Sucesso
 
 - [ ] Producer envia mensagens via TCP com protocolo binário
