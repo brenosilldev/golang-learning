@@ -63,12 +63,22 @@ Go vs Node.js  → Concorrência real (não event loop), tipagem estática, melh
 | 09 | [Tratamento de Erros](./modulo-09-tratamento-erros/README.md) | error, custom errors, errors.Is/As, panic/recover |
 | 10 | [Pacotes e Módulos](./modulo-10-pacotes-modulos/README.md) | go mod, visibilidade, organização de projeto |
 
+### 🔵 Projeto Intermediário 1 — após M10
+| # | Projeto | O que consolida |
+|---|---------|----------------|
+| 🔵 | [gotas — CLI de Tarefas](./projeto-intermediario-cli/README.md) | M02-M10: structs, interfaces, erros, pacotes, IO |
+
 ### 🔴 Avançado (Módulos 11-13)
 | # | Módulo | Tópicos |
 |---|--------|---------|
 | 11 | [Concorrência](./modulo-11-concorrencia/README.md) | Goroutines, channels, select, patterns, context |
 | 12 | [Generics](./modulo-12-generics/README.md) | Type parameters, constraints, uso prático |
 | 13 | [Testes](./modulo-13-testes/README.md) | testing, benchmarks, table-driven, testify |
+
+### 🔵 Projeto Intermediário 2 — após M13
+| # | Projeto | O que consolida |
+|---|---------|----------------|
+| 🔵 | [linkvault — API REST](./projeto-intermediario-api/README.md) | M04-M13: concorrência, interfaces, testes, arquitetura em camadas |
 
 ### 🏗️ APIs & Produção (Módulos 14-17)
 | # | Módulo | Tópicos |
@@ -91,6 +101,12 @@ Go vs Node.js  → Concorrência real (não event loop), tipagem estática, melh
 | # | Módulo | Tópicos |
 |---|--------|---------|
 | 23 | [Segurança em Go](./modulo-23-seguranca/README.md) | bcrypt, JWT, middleware RBAC, TLS/mTLS, rate limiting, OWASP |
+
+### ⚡ Performance & CI/CD (Módulos 24-25)
+| # | Módulo | Tópicos |
+|---|--------|---------|
+| 24 | [Performance & Profiling](./modulo-24-performance-profiling/README.md) | pprof, benchmarks, escape analysis, sync.Pool, p50/p95/p99 |
+| 25 | [CI/CD com GitHub Actions](./modulo-25-cicd-github-actions/README.md) | golangci-lint, cobertura, Docker multi-arch, govulncheck |
 
 ### 🎯 Projeto Final
 | # | Módulo | Tópicos |
