@@ -17,7 +17,8 @@
 | 5️⃣ | **[5-CHEATSHEET.md](./5-CHEATSHEET.md)** | Referência rápida de sintaxe Go |
 | 6️⃣ | **[6-ERROS_COMUNS.md](./6-ERROS_COMUNS.md)** | 28 armadilhas do iniciante ao avançado |
 | 7️⃣ | **[7-INTERVIEW_PREP.md](./7-INTERVIEW_PREP.md)** | LeetCode patterns, system design, perguntas técnicas |
-| 8️⃣ | **[curso/README.md](./curso/README.md)** | Trilha completa com todos os módulos |
+| 8️⃣ | **[8-O_QUE_VOCE_PODE_CONSTRUIR.md](./8-O_QUE_VOCE_PODE_CONSTRUIR.md)** | O que cada módulo desbloqueia e combinações até o NexusMQ |
+| 9️⃣ | **[curso/README.md](./curso/README.md)** | Trilha completa com todos os módulos |
 
 ---
 
